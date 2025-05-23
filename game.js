@@ -173,6 +173,25 @@ function endGame() {
     clearInterval(obstacleTimer);
 }
 
+// Add touch and click event listeners
+document.addEventListener('click', handleGameInput);
+document.addEventListener('touchstart', handleGameInput);
+
+function handleGameInput(event) {
+    if (!gameStarted) {
+        startGame();
+    } else if (!gameOver) {
+        velocity = -8;
+    }
+    
+    // Create firework at click/touch position
+    const rect = document.body.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    createFirework(x, y);
+}
+
+// Remove the old keydown event listener and replace with this
 document.addEventListener('keydown', (event) => {
     if (event.code === 'Space') {
         if (!gameStarted) {
@@ -180,5 +199,9 @@ document.addEventListener('keydown', (event) => {
         } else if (!gameOver) {
             velocity = -8;
         }
+        // Create firework at a random position when space is pressed
+        const x = Math.random() * window.innerWidth;
+        const y = Math.random() * window.innerHeight;
+        createFirework(x, y);
     }
 }); 
